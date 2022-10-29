@@ -1,4 +1,9 @@
 import * as express from 'express';
+import LoginRouter from './routers/loginRouter';
+import TeamRouter from './routers/teamsRouter';
+import matchesRouter from './routers/matchesRouter';
+// import loginMiddleware from './middlewares/loginMiddleware';
+// import LoginController from './controllers/loginController';
 
 class App {
   public app: express.Express;
@@ -7,9 +12,14 @@ class App {
     this.app = express();
 
     this.config();
+    // const loginController = new LoginController();
 
     // Não remover essa rota
     this.app.get('/', (req, res) => res.json({ ok: true }));
+    this.app.use(LoginRouter);
+    // this.app.post('/login', loginMiddleware, loginController.login);
+    this.app.use('/teams', TeamRouter);
+    this.app.use('/matches', matchesRouter);
   }
 
   private config():void {
@@ -19,6 +29,8 @@ class App {
       res.header('Access-Control-Allow-Headers', '*');
       next();
     };
+
+    // this.app.use('/login', LoginRouter);
 
     this.app.use(express.json());
     this.app.use(accessControl);

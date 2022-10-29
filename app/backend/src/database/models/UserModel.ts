@@ -30,6 +30,7 @@ Users.init({
   },
   password: {
     type: STRING(100),
+    allowNull: false,
   },
 }, {
   underscored: true,
