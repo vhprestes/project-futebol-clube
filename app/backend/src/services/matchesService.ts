@@ -1,6 +1,5 @@
 import Matches from '../database/models/MatchesModel';
 import Teams from '../database/models/TeamModel';
-import IGoals from '../interfaces/IGoals';
 
 type Item<T> = { [key: string]: T; };
 
@@ -30,8 +29,7 @@ export default class MatchesService {
     return check;
   };
 
-  update = async (id: number, goals: IGoals) => {
-    const { homeTeamGoals, awayTeamGoals } = goals;
+  update = async (id:number, homeTeamGoals:number, awayTeamGoals:number) => {
     await Matches.update({ awayTeamGoals, homeTeamGoals }, { where: { id } });
     const updated = await this.getById(id);
     console.log('updated! id:', updated);
