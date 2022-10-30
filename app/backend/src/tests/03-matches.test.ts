@@ -107,8 +107,66 @@ it("Testando passar dados inválidos", async () => {
     expect(result.body).to.be.a('array');
   });
 
-
+});
+  describe('Testando o Update ? =>', () => {
+      it('retorna status 200', async () => {
+      const response = await chai.request(app).patch('/matches/1').send({ homeTeamGoals: 1, awayTeamGoals: 0 });
+      expect(response.status).to.be.eq(200);
+      expect(response.body).to.be.an('object');
+      expect(response.body).to.have.property('message');
+      expect(response.body.message).to.be.eq('Match updated');
+    });
 
   
 });
 
+describe('Testando os posts do match =>', () => {
+
+  // it('Testando se volta 401 e mensagem "Token not found" quando não há token', async () => {
+  //   const response = await chai.request(app).post('/matches');
+  //   const { status, body } = response;
+  //   expect(status).to.be.equal(401);
+  //   expect(body).to.have.property("message").equal("Token not found");
+  // });
+
+//   it('Testando se volta 401 quando o token é inválido', async () => {
+//     const response = await chai.request(app)
+//     .post('/matches')
+//     .set('authorization', 'biruleibeleibeibelibeibeleibe');
+//     const { status, body } = response;
+//     expect(status).to.be.eq(401);
+//     expect(body).to.have.property("message").equal("Token must be a valid token");
+//   });
+
+  const EQUAL_TEAMS = {
+    "homeTeam": 16, 
+    "awayTeam": 16,
+    "homeTeamGoals": 2,
+    "awayTeamGoals": 2
+  }
+  const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwicm9sZSI6ImFkbWluIiwiaWF0IjoxNjU0NTI3MTg5fQ.XS_9AA82iNoiVaASi0NtJpqOQ_gHSHhxrpIdigiT-fc"
+
+  it('retorna status 422 para partidas com times iguais', async () => {
+    const response = await chai.request(app)
+    .post('/matches')
+    .set('authorization', token)
+    .send(EQUAL_TEAMS);
+    const { status, body } = response;
+    expect(status).to.be.eq(422);
+    expect(body).to.have.property("message").equal("It is not possible to create a match with two equal teams");
+  });
+
+
+  const CREATE = {
+    "homeTeam": 1, 
+    "awayTeam": 2,
+    "homeTeamGoals": 3,
+    "awayTeamGoals": 4
+  }
+
+  it('retorna status 201 ao criar partida', async () => {
+    const response = await chai.request(app).post('/matches').set('authorization', token).send(CREATE);
+    const { status, body } = response;
+    expect(status).to.be.equal(201);
+  });
+});

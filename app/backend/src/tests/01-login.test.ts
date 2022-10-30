@@ -73,4 +73,29 @@ describe('Rota POST /', () => {
     expect(result.body).to.have.property('message');
     expect(result.body.message).to.be.equal('Incorrect email or password');
   });
+
+
+  describe("Testando a validação do Token =>", () => {
+    it("Testando se volta erro 401 e mensagem 'Token not found' quando o token não é encontrado ", async () => {
+      const response = await chai.request(app).get("/login/validate");
+      const { status, body } = response;
+      expect(status).to.be.eq(401);
+      expect(body).to.have.property("message");
+      expect(body).to.deep.eq({ message: "Token not found" });
+    });
+  
+    it("retorna status 200 ao enviar token válido", async () => {
+      const ADM_LOGIN = {
+        email: "admin@admin.com",
+        password: "secret_admin",
+      }
+      const response = await chai.request(app).post("/login").send(ADM_LOGIN);
+      const token = response.body.token;
+      const newResponse = await chai.request(app).get("/login/validate").set("authorization", token);
+      const { status, body } = newResponse;
+      expect(status).to.be.equal(200);
+      expect(body).to.have.property("role");
+      expect(body).to.be.equal({ role: "admin" });
+    });
+  });
 });
