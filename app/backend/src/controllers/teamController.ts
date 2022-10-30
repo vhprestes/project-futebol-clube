@@ -17,4 +17,12 @@ export default class TeamController {
     const team = await this.teamService.findById([Number(req.params.id)]);
     return res.status(200).json(team);
   };
+
+  getTeam = async (req: Request, res: Response) => {
+    const { data, message } = await this.teamService.getTeam(Number(req.params.id));
+    if (message) {
+      return res.status(401).json({ message });
+    }
+    return res.status(200).json(data);
+  };
 }

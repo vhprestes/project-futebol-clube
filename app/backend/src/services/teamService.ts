@@ -14,4 +14,10 @@ export default class TeamService {
     console.log('ln 14 pega se a team existe papai =>', checkTeams);
     if (checkTeams) return { statusCode: 404, message: 'There is no team with such id!' };
   };
+
+  getTeam = async (id: number) => {
+    const team = await TeamModel.findOne({ where: { id } });
+    if (!team) return { statusCode: 404, message: 'There is no team with such id!' };
+    return { statusCode: 200, data: team };
+  };
 }
