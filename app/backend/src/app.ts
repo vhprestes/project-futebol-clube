@@ -4,6 +4,7 @@ import TeamRouter from './routers/teamsRouter';
 import matchesRouter from './routers/matchesRouter';
 // import loginMiddleware from './middlewares/loginMiddleware';
 // import LoginController from './controllers/loginController';
+import LeaderboardRouter from './routers/leaderboardRouter';
 
 class App {
   public app: express.Express;
@@ -20,6 +21,7 @@ class App {
     // this.app.post('/login', loginMiddleware, loginController.login);
     this.app.use('/teams', TeamRouter);
     this.app.use('/matches', matchesRouter);
+    this.app.use('/leaderboard', LeaderboardRouter);
   }
 
   private config():void {
