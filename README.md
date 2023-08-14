@@ -7,12 +7,12 @@ Feito utilizando NodeJS, Typescript, Express, Mocha, Chai, Docker
 
 Clone o repositório
 ```bash
-git clone git@github.com:vhprestes/Projeto-TFC.git
+git clone git@github.com:vhprestes/project-futebol-clube.git
 ```
 
 Entre na pasta do projeto
 ```bash
- cd Projeto-TFC
+ cd project-futebol-clube
 ```
 
 Suba os containers
